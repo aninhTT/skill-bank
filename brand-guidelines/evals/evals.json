@@ -1,0 +1,56 @@
+[
+  {
+    "name": "Internal deck — Q4 results",
+    "prompt": "Create a 5-slide internal deck about Q4 results for the engineering all-hands.",
+    "expectations": [
+      "Identifies audience as Internal and selects Montserrat font",
+      "Starts from the base template (assets/Internal presentation template.pptx), not built from scratch",
+      "Title slide uses Template slide 1 pattern: left-aligned title with full-height photo on right",
+      "Section dividers include eyebrow text in ALL CAPS using TT Blue #009FD9",
+      "Slides include footer text and bottom horizontal rule",
+      "Loads references/presentation-workflow.md for slide mapping and visual specs",
+      "References the All Thumbs deck as the quality bar for polished execution",
+      "Output is a .pptx file"
+    ]
+  },
+  {
+    "name": "Social post — new feature for pros",
+    "prompt": "Write a social post announcing a new feature for pros that helps them manage their schedule.",
+    "expectations": [
+      "Identifies audience as Home professionals (pros)",
+      "Uses pro-facing positioning: find profitable jobs, grow their business",
+      "Tone is Encouraging or Celebratory — not hype-driven",
+      "No ALL CAPS hype words or excessive exclamation marks",
+      "No aspirational buzzwords (revolutionary, game-changing, disruptive)",
+      "Soft CTA, not a hard sell",
+      "1-3 hashtags max",
+      "Loads references/voice-and-tone.md"
+    ]
+  },
+  {
+    "name": "Event brief — pro meetup in Austin",
+    "prompt": "Draft an event brief for a pro meetup in Austin, TX. About 50 pros expected.",
+    "expectations": [
+      "Loads references/events.md for event guidelines",
+      "Recommends open, airy gallery space — not a dark bar",
+      "Suggests earthy, textured materials (wood, matte paper) — not foamcore or glossy vinyl",
+      "Recommends quality swag over generic corporate items",
+      "Advises against over-branding — not every surface needs a logo",
+      "Suggests simple wayfinding with brand colors and icons",
+      "Considers lighter woods like birch for warmth"
+    ]
+  },
+  {
+    "name": "Blog intro — home improvement trends",
+    "prompt": "Write a blog post intro about home improvement trends for 2026, targeting homeowners.",
+    "expectations": [
+      "Identifies audience as Homeowners (customers)",
+      "Opens with an observation or real data, not hype",
+      "Conversational yet authoritative tone — Instructive or Helpful",
+      "No aspirational buzzwords or ALL CAPS emphasis",
+      "Structure promises scannable numbered/headed sections ahead",
+      "Soft CTA or natural transition to body content",
+      "Loads references/voice-and-tone.md"
+    ]
+  }
+]
