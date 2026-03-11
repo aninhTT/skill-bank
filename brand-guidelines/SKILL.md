@@ -1,6 +1,5 @@
 ---
 name: brand-guidelines
-command: brand
 description: Generate branded content and assets consistent with Thumbtack's brand identity. ALWAYS use this skill whenever creating any presentation, deck, slides, or .pptx file — even if the user doesn't say "branded" or "Thumbtack", because all internal content must follow brand guidelines. Also triggers for any written content (emails, blog posts, social posts, memos, one-pagers, PDFs) that will be seen by employees, leadership, homeowners (customers), or home professionals (pros). Specific triggers include "make a deck", "build slides", "create a presentation", "write a one-pager", "draft an email", "write a blog post", "Slack announcement", "internal memo", "event materials", "quarterly review", "all-hands", "kickoff deck", "pitch deck", "branded copy", "brand voice", "brand colors". If someone mentions Thumbtack content of any kind, use this skill. When in doubt about whether to apply brand guidelines, apply them — it's always better to be on-brand than to miss it.
 version: 1.0.0
 ---

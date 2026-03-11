@@ -18,6 +18,8 @@ Before doing anything else, gather context about who is using this skill. Ask th
 3. **Strategic objectives** — "Are you part of any cross-functional strategic objectives?" (e.g., Demand Generation, Customer Retention, Platform Reliability, Pro Quality). If they're unsure, skip this.
 4. **Top Slack channels** — "What are your 3-5 most-used Slack channels?" (These will be the primary channels scanned for signals.)
 5. **Biggest workflow pain points** — "Off the top of your head, what are 1-2 things in your day-to-day that feel repetitive, manual, or slow?" (Optional — helps seed the scan.)
+6. **Pain points you've been trying to solve** — "Are there any pain points or challenges you've been actively trying to solve recently — even if you haven't found a good solution yet?" (This surfaces problems the user is already aware of and motivated to fix, which often make the best use case candidates.)
+7. **Wish-list items** — "Is there anything you wish you could do in your role but just don't have the time for?" (This uncovers latent opportunities — things the user would do if the cost were lower. These often point to high-value automation or AI-assist use cases.)
 
 Store these answers and use them to personalize the entire workflow.
 
