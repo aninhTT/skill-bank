@@ -24,6 +24,26 @@ This skill helps two Thumbtack audiences build real, specific AI change manageme
 
 ---
 
+## ⚠️ Common Pitfalls — Read Before Building the Plan
+
+1. **Don't skip the preview step.** It's tempting to jump to the formatted plan once signals are collected. Always show Phase 2.7 first — users often want to redirect before seeing the full output.
+
+2. **Don't make the plan generic.** If you don't have enough signal to name specific use cases, tools, or team behaviors, go back and ask. A plan that could apply to any team at any company is not useful here.
+
+3. **Don't assign the wrong activation format.** Read the team's maturity and signal carefully before routing to a format. Match the format to where the team actually is, not where you'd like them to be.
+
+4. **Don't skip scheduling.** If the user doesn't explicitly decline, always offer it. Plans without reminders rarely get executed.
+
+5. **Don't assume Slack = DM.** Ask where Slack reminders should go. Leaders often want messages going to their team or a channel, not just themselves.
+
+6. **Don't treat the three pillars as equal.** For Leaders, always identify which pillar is most at risk based on signals and lead with that in the plan. Pillar 1 (personal fluency) is almost always the real blocker even when people think it's Pillar 3.
+
+7. **Don't over-schedule.** If the user's calendar is already packed, recommend fewer, higher-impact milestones rather than loading every week with reminders.
+
+8. **Don't ignore partial or missing signals.** If Granola, Slack, or Drive searches come back empty, note it explicitly and adjust confidence level in the plan. Don't present the plan as fully grounded when it isn't.
+
+---
+
 ## Phase 0: Identify Role
 
 Ask:
@@ -38,9 +58,13 @@ Branch based on their answer.
 
 ### Phase 1 — Intake
 
-Ask all questions in a single message:
+> 💡 **Tip:** For faster input, try voice dictating your answers. On Mac, press `Fn Fn` (double-tap Function key) to start dictation anywhere. On iPhone/iPad, tap the mic on the keyboard. You don't need to be precise — rough, spoken answers work great.
 
-> "Great — let's build your functional enablement plan. A few questions to get started:
+Ask all questions in a single message. Note that the user doesn't need to answer every question — even rough or partial answers help. The more context they share, the more specific the plan will be. If their answers are too sparse to build a meaningful plan (e.g., function name only with no maturity or barriers), ask 1–2 targeted follow-up questions to fill the most critical gaps before proceeding to signal collection.
+
+> "Great — let's build your functional enablement plan. Share whatever you can for each question below — even rough answers help. Voice dictate if it's faster, and skip anything you're unsure about.
+>
+> A few questions to get started:
 >
 > 1. **What's your function?** (e.g., Product, People, Finance, Legal, Marketing)
 >
@@ -111,6 +135,42 @@ Based on intake + confirmed signals, determine the right team activation format:
 | No bandwidth for a session; needs ongoing rhythms | **Weekly AI Moment** cadence from Manager Playbook |
 | Senior leadership function (Director+) | **EFLT format** (3.5h, hands-on build) or **SLT format** (full day) |
 | Individuals hitting specific walls | **Office Hours / Buddy Pairings** |
+
+---
+
+### Phase 2.7 — Plan Preview + Output Format
+
+Before building the full plan, share a substantive preview with **at least 4–5 concrete recommendations** grounded in what you've learned. This should be detailed enough for the user to redirect before the full formatted plan is generated.
+
+> "📋 Here's my recommended approach — tell me what to adjust before I build the full plan:
+>
+> **Recommended activation format:** [e.g., Show/Don't Tell → Workflow Mapping]
+> **Why:** [2–3 sentences grounded in signals and intake]
+>
+> **Top recommendations:**
+> 1. [Specific, actionable recommendation with brief rationale]
+> 2. [Specific, actionable recommendation with brief rationale]
+> 3. [Specific, actionable recommendation with brief rationale]
+> 4. [Specific, actionable recommendation with brief rationale]
+> 5. [Specific, actionable recommendation with brief rationale]
+>
+> **Suggested learning path:** [Explorer → TackStart / Operator → TackShift / Builder → targeted sessions]
+> **Plan structure:** 60-day sprint across 3 phases
+> **Top use cases to pilot:** [3 specific, function-grounded use cases — not generic]
+>
+> Does this direction look right? Reply **yes** to generate the full plan, or tell me what to adjust.
+>
+> Also — what format would you like your plan in?
+> - **Markdown** (default) — saved to ~/assistant/content/change-management/
+> - **Word Doc (.docx)** — formatted document you can edit and share
+> - **Slides (.pptx)** — deck version of the plan
+>
+> Leave blank for Markdown."
+
+**Wait for confirmation (and any adjustments) before proceeding. Also note the output format choice.**
+- Markdown → write to file system (default behavior)
+- DOCX → invoke the `docx` skill
+- PPTX → invoke the `pptx` skill (use Thumbtack internal template per CLAUDE.md)
 
 ---
 
@@ -208,6 +268,33 @@ what matters is that it reflects your actual context.
 
 ---
 
+### Phase 3.5 — Schedule Reminders
+
+After the plan is saved, parse the 60-day action plan into key milestones and present them for the user to review and customize before scheduling anything.
+
+> "📅 Here are the key milestones I pulled from your plan. Adjust timing, remove any, or add your own before I schedule them:
+>
+> 1. Week 1 — [First activation event] → [suggested date based on today]
+> 2. Week 2 — [First use case pilot kickoff] → [suggested date]
+> 3. Week 4 — [Mid-point check-in] → [suggested date]
+> 4. Week 6 — [Second use case or iteration] → [suggested date]
+> 5. Week 8 — [60-day retrospective + next quarter planning] → [suggested date]
+>
+> **Where should I send reminders?**
+> - Google Calendar (creates a 30-min event per milestone)
+> - Slack message — to yourself, a specific channel, or a team DM (let me know which)
+> - Both
+>
+> What would you like to schedule, and where should the reminders go?"
+
+**If Google Calendar selected:** Use `gcal_create_event` for each milestone with title `[AI] [Milestone name]`, 30-min duration, and the specific action from the plan as the description.
+
+**If Slack selected:** Use `slack_schedule_message` to send a brief nudge on each milestone date. Ask the user for destination: DM to themselves (default), a specific channel, or a team DM (ask for member names). Content: the milestone action + reference to the saved plan.
+
+**Confirm all scheduled items** and display a summary list.
+
+---
+
 ### Phase 4 — Slack Connections
 
 Ask:
@@ -224,9 +311,13 @@ Also send the completed plan to the champion as a Slack DM.
 
 ### Phase 1 — Intake
 
-Ask all questions in a single message:
+> 💡 **Tip:** For faster input, try voice dictating your answers. On Mac, press `Fn Fn` (double-tap Function key) to start dictation anywhere. On iPhone/iPad, tap the mic on the keyboard. You don't need to be precise — rough, spoken answers work great.
 
-> "Great — let's build your change management plan. A few questions first:
+Ask all questions in a single message. Note that the user doesn't need to answer every question — even rough or partial answers help. The more context they share, the more specific the plan will be. If their answers are too sparse to build a meaningful plan, ask 1–2 targeted follow-up questions to fill the most critical gaps before proceeding to signal collection.
+
+> "Great — let's build your change management plan. Share whatever you can for each question below — even rough answers help. Voice dictate if it's faster, and skip anything you're unsure about.
+>
+> A few questions first:
 >
 > 1. **What's your function/org and how many direct reports do you have?**
 >
@@ -300,6 +391,42 @@ After searching, synthesize and share back **before building**:
 | Need energy + momentum | **AI Brainstorm / Mini Hackathon** (~2 hrs) |
 | No bandwidth; wants ongoing integration | **Weekly AI Moment** cadence |
 | Individuals need direct support | **Office Hours / Buddy Pairings** |
+
+---
+
+### Phase 2.7 — Plan Preview + Output Format
+
+Before building the full plan, share a substantive preview with **at least 4–5 concrete recommendations** grounded in what you've learned. This should be detailed enough for the user to redirect before the full formatted plan is generated.
+
+> "📋 Here's my recommended approach — tell me what to adjust before I build the full plan:
+>
+> **Recommended activation format:** [e.g., EFLT 3.5-hour hands-on build / Show Don't Tell]
+> **Why:** [2–3 sentences grounded in signals and intake]
+>
+> **Top recommendations:**
+> 1. [Specific, actionable recommendation with brief rationale]
+> 2. [Specific, actionable recommendation with brief rationale]
+> 3. [Specific, actionable recommendation with brief rationale]
+> 4. [Specific, actionable recommendation with brief rationale]
+> 5. [Specific, actionable recommendation with brief rationale]
+>
+> **Most at-risk pillar:** [Pillar 1 / 2 / 3 — and why, based on signals]
+> **Suggested learning path for your team:** [TackStart / TackShift / mix]
+> **Plan structure:** 8-week sprint across phases
+>
+> Does this direction look right? Reply **yes** to generate the full plan, or tell me what to adjust.
+>
+> Also — what format would you like your plan in?
+> - **Markdown** (default) — saved to ~/assistant/content/change-management/
+> - **Word Doc (.docx)** — formatted document you can edit and share
+> - **Slides (.pptx)** — deck version of the plan
+>
+> Leave blank for Markdown."
+
+**Wait for confirmation (and any adjustments) before proceeding. Also note the output format choice.**
+- Markdown → write to file system (default behavior)
+- DOCX → invoke the `docx` skill
+- PPTX → invoke the `pptx` skill (use Thumbtack internal template per CLAUDE.md)
 
 ---
 
@@ -389,6 +516,34 @@ e.g., if they mentioned "resistance" or "I don't have time" coming from reports.
 targeted sessions for builders. Include #ai-lab and #ai-resources as ongoing habits.
 Manager AI Playbook: go/manager-ai]
 ```
+
+---
+
+### Phase 3.5 — Schedule Reminders
+
+After the plan is saved, parse the action plan into key milestones across 8 weeks and present them for the user to review and customize before scheduling anything.
+
+> "📅 Here are the key milestones I pulled from your plan. Adjust timing, remove any, or add your own before I schedule them:
+>
+> 1. Week 1 — [Personal fluency commitment — Pillar 1 action] → [suggested date]
+> 2. Week 2 — [First team activation event] → [suggested date]
+> 3. Week 3 — [Learning chain check-in with direct reports] → [suggested date]
+> 4. Week 4 — [Mid-point reflection: what's working, what's blocked] → [suggested date]
+> 5. Week 6 — [Second use case or team activation iteration] → [suggested date]
+> 6. Week 8 — [Sprint retrospective + next phase planning] → [suggested date]
+>
+> **Where should I send reminders?**
+> - Google Calendar (creates a 30-min event per milestone)
+> - Slack message — to yourself, a specific channel, or a team DM (let me know which)
+> - Both
+>
+> What would you like to schedule, and where should the reminders go?"
+
+**If Google Calendar selected:** Use `gcal_create_event` for each milestone with title `[AI] [Milestone name]`, 30-min duration, and the specific action from the plan as the description.
+
+**If Slack selected:** Use `slack_schedule_message` to send a brief nudge on each milestone date. Ask the user for destination: DM to themselves (default), a specific channel, or a team DM (ask for member names). Content: the milestone action + reference to the saved plan.
+
+**Confirm all scheduled items** and display a summary list.
 
 ---
 
