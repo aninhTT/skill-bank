@@ -317,6 +317,10 @@ Ask all questions in a single message. Note that the user doesn't need to answer
 
 > "Great — let's build your change management plan. Share whatever you can for each question below — even rough answers help. Voice dictate if it's faster, and skip anything you're unsure about.
 >
+> **Quick context before we start:** This plan is focused on your reporting line — the managers you support and how the learning cascades across your teams. Your function's AI Champion(s) are separately building a functional enablement plan, and there's central support coming from Amie and the AI team (learning offerings, champions network, etc.). Your role as a leader is to reinforce the learning and hold your teams accountable for moving through the change — and that starts with you getting personally fluent.
+>
+> *If you're in Engineering or IT: The Developer Experience team is handling the infrastructure of enablement and change for your function. Your plan will focus on the leadership and accountability layer — reinforcing learning, making space, and driving adoption through your managers.*
+>
 > A few questions first:
 >
 > 1. **What's your function/org and how many direct reports do you have?**
@@ -375,6 +379,8 @@ After searching, synthesize and share back **before building**:
 > **My read:**
 > [1–2 sentence honest diagnosis — e.g., "You're personally in Explorer/Operator territory. Your org sounds mixed: some engaged, but no shared language or explicit space yet. The space question seems like the real unlock here."]
 >
+> **Broader context:** Your function's AI Champion(s) are also building a functional enablement plan — we'll connect you with them after the plan is built to check alignment.
+>
 > Does this match your read? Anything to add or correct before I build the plan?"
 
 **Wait for confirmation before proceeding.**
@@ -414,6 +420,8 @@ Before building the full plan, share a substantive preview with **at least 4–5
 > **Suggested learning path for your team:** [TackStart / TackShift / mix]
 > **Plan structure:** 8-week sprint across phases
 >
+> **Next step after the plan:** I'll connect you with your function's AI Champion(s) via Slack to align on how your plan fits with their functional enablement plan.
+>
 > Does this direction look right? Reply **yes** to generate the full plan, or tell me what to adjust.
 >
 > Also — what format would you like your plan in?
@@ -439,6 +447,7 @@ Before building the full plan, share a substantive preview with **at least 4–5
 - `references/learning-offerings.md` → offerings to deploy with managers
 - `references/team-experimentation.md` → cadence, coaching-by-modes, talk tracks
 - `references/offsite-templates.md` → if a session or offsite format is recommended
+- `references/ai-champions-by-function.md` → look up the function's AI Champion(s) for Phase 4 alignment
 
 **Save output to:** `~/assistant/content/change-management/YYYY-MM-DD-[name]-leader-plan.md`
 
@@ -452,6 +461,26 @@ Generated: [date]
 [Where they are as a leader personally (Explorer/Operator/Builder — their own words,
 reflected back honestly) + where their org is. Be specific, not motivational.
 Explorer is not a criticism. Staying stagnant over time is the issue.]
+
+## How This Plan Fits the Bigger Picture
+This plan focuses on your reporting line — the managers you support and how
+learning cascades across your teams. It is not a functional enablement plan.
+
+Your function's AI Champion(s) are separately building a functional enablement
+plan that covers broader team activation, tool adoption, and use-case piloting.
+There is also central support from Amie and the AI team (learning offerings,
+office hours, AI Champions network). These efforts are complementary — your
+role as a leader is to reinforce the learning and hold your teams accountable
+for moving through the change.
+
+[If Engineering or IT: "Note: The Developer Experience team is handling the
+infrastructure of enablement and change for Engineering/IT — tooling rollout,
+developer workflows, and technical onboarding. Your plan focuses on the
+leadership layer: reinforcing learning, making space, and holding your managers
+and teams accountable for adoption."]
+
+We'll connect you with your AI Champion(s) at the end of this process to
+check alignment between your plans.
 
 ## Team Diagnosis
 [Org maturity level + main blocker + what this means for which levers to pull.
@@ -469,6 +498,10 @@ ai-expectations.md — not as a checklist but as a diagnostic. Where are they
 strong? Where is the real gap?]
 
 ## Pillar 1: Get Personally Fluent
+Everything else in this plan depends on this. You can't credibly hold your teams
+accountable for AI adoption if you haven't built your own practice. This is where
+it starts.
+
 **Where you are:** [honest, from their intake answer — their words reflected back]
 **What to do at your stage:** [from tool-stack.md, filtered to their level]
 **One rep to take this week:** [specific, single action — not a list]
@@ -547,10 +580,44 @@ After the plan is saved, parse the action plan into key milestones across 8 week
 
 ---
 
-### Phase 4 — Slack Connections
+### Phase 4 — AI Champion Check-in + Slack Connections
+
+#### Step 1: Connect with Your Function's AI Champion(s)
+
+After the plan is built, look up the AI Champion(s) for the leader's function using `references/ai-champions-by-function.md`. Match the function from intake Q1 using the fuzzy mapping table in that file (e.g., HR → People, Sales → Commercial, Infra → Engineering/IT).
+
+If no match is found → tell the user: "I couldn't find an AI Champion listed for your function. Check with Amie — she can connect you with the right person."
+
+If match is found → present the champion(s) and a draft Slack message:
+
+> "I found your function's AI Champion(s): **[Name(s)]**. I'd recommend reaching out to align your change management plan with what they're building for functional enablement. Here's a draft message — edit anything before I send it:
+>
+> ---
+>
+> Hey [champion name(s)] — As part of a Directors+ session, I put together a change management plan focused on my reporting line and the managers I support. I wanted to share it with you and check in on what you're thinking about for the functional enablement plan — would love to understand how these efforts align or where there might be overlap.
+>
+> Here's my plan: [plan file path or summary]
+>
+> Happy to find time to walk through it if that'd be useful.
+>
+> ---
+>
+> Want me to send this as-is, edit it first, or skip this step?"
+
+**For functions with many champions (e.g., Commercial, Finance):** Ask the user if they'd like to message the full group or pick 1–2 champions they work with most closely. Default to suggesting the smaller group for a more meaningful conversation.
+
+#### Step 2: Send via Slack
+
+- Use `slack_search_users` with each champion's email to find their Slack user ID
+- Use `slack_send_message_draft` to create a draft for user approval (preferred)
+- If user says "just send it" → use `slack_send_message` directly
+- For the plan content: paste a concise summary of the plan into the message, or reference the saved file path. If the plan was exported as DOCX/PPTX, note that the user will need to share the file manually.
+- Confirm once sent
+
+#### Step 3: Peer Leader Connections
 
 Ask:
-> "Who should I loop together on this? I can send a Slack intro connecting you with peer leaders navigating similar change management challenges right now."
+> "Who else should I loop together on this? I can send a Slack intro connecting you with peer leaders navigating similar change management challenges right now."
 
 If they provide names → send group DM:
 > "Hey [names] — looping you together because you're each navigating how to lead AI change in your orgs right now, and I think there's real overlap (especially on making explicit space). [Name] leads [Function], [Name] leads [Function]. Worth a conversation."
