@@ -27,14 +27,13 @@ Store these answers and use them to personalize the entire workflow.
 
 ## Tool Stack
 
-Thumbtack employees have access to a strong AI tool stack. When evaluating feasibility, assume these are available:
+Thumbtack employees have access to a strong AI tool stack. Default to **Claude Enterprise + Cowork** for most use cases — it covers the majority of what people actually need. When evaluating feasibility, assume these are available:
 
-- **Gemini Enterprise** — Google Workspace-integrated AI (Docs, Sheets, Slides, Gmail, Meet)
-- **ChatGPT Enterprise** (includes Codex) — general assistant, code generation, analysis
-- **Claude Enterprise** — includes Claude Chat, Claude Code, and Cowork (collaborative AI workspace)
+- **Claude Enterprise** (Claude Chat, Claude Code, Cowork) — *default tool for most use cases*; covers chat, drafting, analysis, agentic workflows, and code
+- **Gemini Enterprise** — when Google Workspace integration is needed (Docs, Sheets, Slides, Gmail, Meet)
+- **ChatGPT Enterprise** (incl. Codex) — alternative general assistant
 - **Granola** — meeting intelligence (company-wide)
 - **Slack** — communication + unstructured data source
-- **Agent builders:** Glean (~45+ users, enterprise search + agents) and Credal (BigQuery connected, agent builder)
 - **Developer tools:** GitHub Copilot, Claude Code, Codex
 
 Only flag feasibility concerns if something requires a tool or data source that genuinely doesn't exist yet.
@@ -58,9 +57,7 @@ Collect signals from multiple sources in parallel. The goal is to find pain poin
 
 #### 1A. Meeting Notes (always)
 
-First check if `~/assistant/context/meeting-digest.md` exists. If it does, read it.
-
-If it doesn't exist, use `query_granola_meetings` to query the user's recent meetings (last 30 days):
+Use `query_granola_meetings` to query the user's recent meetings (last 30 days, or whatever timeframe the user specified):
 ```
 "What pain points, manual processes, repetitive tasks, open loops, and workflow frustrations have been mentioned in my recent meetings?"
 ```
@@ -72,11 +69,9 @@ Look for:
 - "We need to figure out..." or "someone should..." statements
 - Themes about what's working and what's not
 
-If the meeting digest exists but is more than 5 days old, note this in the output and suggest running `/granola-sync` first.
-
 #### 1B. User's Slack Channels (always)
 
-Use `slack_search_public` to search the user's specified channels from the last 7-10 days. Run 3 targeted searches:
+Query Slack live every run — there is no cached digest. Use `slack_search_public` to search the user's specified channels from the last 7-10 days. Run 3 targeted searches:
 
 **Search 1 — Pain points and friction:**
 ```
@@ -113,13 +108,15 @@ These surface opportunities outside the user's usual channels.
 
 #### 1D. Email (always in full scan)
 
-Use `gmail_search_messages` to search recent email for workflow signals:
+Use `search_threads` (Gmail MCP) to search recent email for workflow signals:
 ```
-subject:(weekly report OR status update OR manual OR process OR recurring)
+subject:(weekly report OR status update OR manual OR process OR recurring) newer_than:14d
 ```
-Scope to last 14 days, limit to 10-15 results.
+Limit to 10-15 results. Use `get_thread` to pull body content for any threads that look promising.
 
 Look for: recurring report requests, manual coordination threads, FYI chains that indicate someone is acting as a human router.
+
+> **If the user names additional connectors at intake** (Calendar, Drive, Linear, Jira, Confluence, Coda, Notion, etc.), include them as additional signal sources using the appropriate connected MCP tools.
 
 #### 1E. Targeted Granola Query (deep-dive only)
 
@@ -138,7 +135,7 @@ in the last 30 days?"
 Group related signals. A Slack complaint about "copying data between spreadsheets" and a meeting note about "manual reporting" might be the same underlying opportunity.
 
 #### Step 2: Generate candidate use cases
-For each cluster, draft a specific use case — not "use AI for reporting" but "auto-generate the weekly channel performance summary from BigQuery data using a Credal agent."
+For each cluster, draft a specific use case — not "use AI for reporting" but "draft the weekly channel performance summary in Cowork using last quarter's reports and the latest data export as context."
 
 #### Step 3: Apply the GenAI Starting Criteria
 Every candidate gets checked against four criteria. A use case should hit at least 3 of 4 to be recommended:
@@ -170,7 +167,7 @@ Every use case that passes the starting criteria gets a quick DVFR check. Use on
 |-----------|----------|---------|
 | **Desirability** | Is there real evidence people want/need this? | 🟢 Multiple signals · 🟡 Inferred need · 🔴 No clear demand |
 | **Viability** | Will it create measurable value? | 🟢 Clear time/quality savings · 🟡 Likely but hard to quantify · 🔴 Effort may exceed benefit |
-| **Feasibility** | Can we build it with current tools? | 🟢 Prototype today · 🟡 Minor gaps (data connection, config) · 🔴 Missing infrastructure |
+| **Feasibility** | Can we build it with current tools? | 🟢 Buildable today in Claude Chat, Cowork, or a short Claude Code script · 🟡 Needs Gemini/ChatGPT Workspace integration or non-trivial setup · 🔴 Missing infrastructure or data access |
 | **Responsibility** | Is it ethical and safe? | 🟢 Low risk, no sensitive data · 🟡 Needs guardrails or human review · 🔴 PII/bias/oversight concerns |
 
 That's it — one emoji and a short phrase per dimension. No paragraphs.
@@ -179,20 +176,24 @@ That's it — one emoji and a short phrase per dimension. No paragraphs.
 
 ### Phase 4: Output
 
-#### 4A. Save the markdown doc
+Before generating output, ask the user (or read from their request):
 
-Save location:
-- **Full scan:** `~/assistant/content/use-cases/YYYY-MM-DD-use-case-scout.md`
-- **Department deep-dive:** `~/assistant/content/use-cases/YYYY-MM-DD-[department]-use-cases.md`
-- **Strategic objective deep-dive:** `~/assistant/content/use-cases/YYYY-MM-DD-[objective]-use-cases.md`
+1. **Where to save?** Accept any path the user provides. If they don't specify, ask. Suggest the current working directory or `~/Documents/` as a fallback. **Do not hardcode** any specific directory — most users won't have it.
+2. **What format?** Offer:
+   - **Full markdown doc** (default if unsure) — uses the Output Template below
+   - **Slack-ready post** — uses the Slack-Ready Format below
+   - **Google Doc** — created via the Workspace tooling (Gemini / Drive MCP)
+   - **Slack DM only with TL;DR** — no saved file; top 3 recommendations DM'd to the user
 
-#### 4B. Share via Slack DM
+Filename suggestion when saving markdown: `YYYY-MM-DD-use-case-scout.md`, `YYYY-MM-DD-[department]-use-cases.md`, or `YYYY-MM-DD-[objective]-use-cases.md`.
 
-After saving, send the user a Slack DM with a summary and link to the doc. Use `slack_search_users` to find their user ID by name, then `slack_send_message` to DM them.
+#### 4A. Save the doc
 
-The DM should include:
-- A brief summary (top 3 recommendations in one-liner format)
-- The full markdown doc contents (formatted for Slack readability)
+Save to the user-specified location in the chosen format.
+
+#### 4B. Share via Slack DM (optional)
+
+If the user wants a Slack DM, use `slack_search_users` to find their user ID by name, then `slack_send_message`. The DM should include a brief summary (top 3 recommendations as one-liners) and a pointer to the saved file (or the full content if no file was saved).
 
 #### Output Template
 
@@ -221,7 +222,7 @@ The DM should include:
 
 **Starting criteria:** Routine ✓ · Examples ✓ · Underutilized data ✓ · Higher-value unlock ✓ (3/4)
 
-**DVFR:** Desirability 🟢 multiple signals · Viability 🟢 clear time savings · Feasibility 🟢 prototype today · Responsibility 🟢 low risk
+**DVFR:** Desirability 🟢 multiple signals · Viability 🟢 clear time savings · Feasibility 🟢 buildable in Cowork today · Responsibility 🟢 low risk
 
 **Try this:** [Actionable first step — a prompt to try, a tool to set up, or a prototype to build]
 
@@ -289,10 +290,24 @@ When asked to format a use case for a Slack channel:
 
 ---
 
+## Gotchas
+
+This skill runs against *the individual user's* connected tools, and configurations vary person to person. Defaults must be opinionated where reasonable, and overridable everywhere.
+
+- **Don't assume any specific channel list, calendar, dept, or naming convention.** Pull from Phase 0 answers (and auto-memory if available).
+- **Pick sensible defaults when the user is silent:**
+  - No channel list given → query the user's DMs and most recent active public channels via `slack_search_public`
+  - No save path given → ask the user. If they want a quick default, suggest the current working directory or `~/Documents/`. Never hardcode a path that assumes a directory like `~/assistant/content/use-cases/` exists.
+  - No output format given → full markdown doc + Slack DM TL;DR
+  - No timeframe given → 30 days for meetings, 7-10 days for Slack, 14 days for Gmail
+- **Degrade gracefully when a connector returns nothing.** Note it in the Sources line and continue rather than failing the run.
+- **Honor any non-default tool the user names** (e.g. "use Linear instead of Jira", "save to Notion") by routing to the appropriate connected MCP.
+
+The point: this skill is a personal tool, not a one-size workflow. Assume Gmail, Slack, and Granola are connected via Claude Desktop — if a user is running this skill, those should be live.
+
 ## Error Handling
 
-- **Meeting digest missing:** Use `query_granola_meetings` directly as fallback. If that also fails, note it and continue with other sources.
 - **Slack search returns no results:** Broaden to 14 days and retry with fewer keywords. If still nothing, note it and continue.
-- **Gmail not connected:** Skip email, note it in the sources line.
+- **Granola returns no meetings:** Note it and continue with other sources.
 - **No signals for a department/objective:** Say so honestly. Suggest the user check in with that team directly.
 - **Too many signals:** Cap at the top 20 most relevant (by recency and specificity).
