@@ -1,15 +1,26 @@
-# Amie's Skill Bank
+# Amie's AI Change Skills
 
-A collection of Claude Code skills I'm building and iterating on. These are constantly changing as I experiment with new workflows and refine existing ones.
+A small, opinionated set of [Claude Code](https://docs.anthropic.com/en/docs/claude-code/skills) skills for driving AI adoption inside a company. Built by Amie Nguyen, AI Champion at Thumbtack.
 
-This will probably move over to the Thumbtack GitHub org at some point, but for now it lives here.
+## What's here
 
-## Skills
+### `ai-intel-digest`
+Fetches the last 30 days of AI news (YouTube transcripts + newsletter RSS/scrape), synthesizes the cross-source signal, and writes a 5–6 minute audio script for an internal podcast. Run monthly.
 
-- **brand-guidelines** — Enforces Thumbtack's brand identity (voice, tone, visual identity, presentation templates) across all content Claude creates.
-- **use-case** — Scans meetings, Slack, and email to discover AI automation opportunities, evaluates them through a DVFR framework, and delivers actionable use case recommendations.
+### `use-case`
+Discovers AI use cases from real workplace signals — Granola meeting notes, Slack, and Gmail. Evaluates each candidate via DVFR (Desirability, Viability, Feasibility, Responsibility) and outputs a shareable doc plus a Slack DM.
 
-## Notes
+### `change-management`
+Two paths:
+- **For AI Champions** — builds a 60-day functional enablement plan after AI Champions Day, diagnosing the function's current state and recommending the right team activation format.
+- **For Managers/Leaders** — builds an org-level change plan using a 3-pillar framework (personal fluency, learning chain, explicit space).
 
-- These skills are designed for use with [Claude Code](https://docs.anthropic.com/en/docs/claude-code/skills)
-- They're a work in progress — expect frequent changes
+Both branches optionally pull signals from Granola, Slack, and Drive; preview the plan for approval before generating; and connect cross-functional peers via Slack intro.
+
+## Using the skills
+
+Each skill is a directory with a `SKILL.md` and supporting `references/`. Claude Code loads them on the trigger phrases listed in each skill's frontmatter — you don't need to invoke them by name.
+
+## Status
+
+Work in progress. Expect frequent changes as the workflows get refined.
