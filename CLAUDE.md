@@ -1,6 +1,6 @@
 # Amie's AI Change Skills
 
-Workspace owner: Amie Nguyen (aninh@thumbtack.com), AI Champion at Thumbtack.
+Workspace owner: Amie (aninh@thumbtack.com), AI Change Leader at Thumbtack.
 These skills support driving AI adoption across Thumbtack functions.
 
 ## Skills in this workspace

@@ -1,6 +1,6 @@
 # Amie's AI Change Skills
 
-A small, opinionated set of [Claude Code](https://docs.anthropic.com/en/docs/claude-code/skills) skills for driving AI adoption inside a company. Built by Amie Nguyen, AI Champion at Thumbtack.
+A small, opinionated set of [Claude Code](https://docs.anthropic.com/en/docs/claude-code/skills) skills for driving AI adoption inside a company. Built by Amie, AI Change Leader at Thumbtack.
 
 ## What's here
 
